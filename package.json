@@ -1,0 +1,26 @@
+{
+  "name": "oz_users_module",
+  "version": "0.1.0",
+  "description": "OZ ERP Users module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edarce09/mUsers.git"
+  },
+  "keywords": [
+    "OZ",
+    "Users",
+    "ERP",
+    "CRM",
+    "URP"
+  ],
+  "author": "Eduardo Arce Kirsch",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/edarce09/mUsers/issues"
+  },
+  "homepage": "https://github.com/edarce09/mUsers#readme"
+}
