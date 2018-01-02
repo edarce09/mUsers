@@ -1,15 +1,16 @@
 var express = require('express');
 var router = express.Router();
+let user = require('../controllers/userControllers');
 
-/* GET users listing. */
+//GET  get Users
+//Post creation of new user
 router.route('/')
-.get(function(req, res, next) {
-  res.send('this should be the users DB');
-})
-  //creation of new user
-.post(function(req, res){
-  let user = req.body;
-  res.send(user);
-});
+  .get(user.getAll)
+  .post(user.saveUser); 
+
+router.route('/:user')
+  .get(user.getOne)
+  .post(user.update)
+  .delete(user.deleteUser);
 
 module.exports = router;
