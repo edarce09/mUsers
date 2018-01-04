@@ -3,6 +3,8 @@
 let mongoose = require('mongoose');
 let paginate = require('mongoose-paginate');
 let connection = require('../../../mongooseSetUp');
+//let crud = require('ozmodelbase');
+let crud = require('/home/kirsch/Repository/jsRepos/myNpmDependencies/ozModelBase');
 
 let ObjectId = mongoose.Schema.Types.ObjectId;
 let Schema = mongoose.Schema;
@@ -19,7 +21,8 @@ const UserSchema = Schema({
    */
   imageSrc: {
     type: String,
-    unique: true
+    //unique: true,
+    required:false
   },
   username: {
     type: String,
@@ -35,14 +38,10 @@ const UserSchema = Schema({
   email:[{
     type: String,
     unique: true,
-    lowercase:true,
-    match: /\b[a-z0-9._%+-]@[a-z0-9.-]+\.[a-z]{2,4}\b/ 
+    //validate: /\b[a-z0-9._%+-]@[a-z0-9.-]+\.[a-z]{2,4}\b/,
+    lowercase:true
     //,sparse:true
   }],
-  isEnable:{
-    type:Boolean,
-    default:true
-  },
   socialNetworks:{
     facebook:{type:String},
   },
@@ -52,10 +51,10 @@ const UserSchema = Schema({
       slack:{},
       github:{}
     }/**,
-    tasks:{/*id reference*//*
+    tasks:[{/*id reference*//*
       type:ObjectId,
       ref:tasks
-    }*/
+    }]*/
   },
   conections:{/*to define*/},
   //hashed password, whom actually saves a plain password?
@@ -70,45 +69,33 @@ const UserSchema = Schema({
   }], */
   title:String,
   id:Number,
-  url:String
+  url:Stringa,
+  //Mandatory attributes
+  lastEdit:{
+    date:{type: Number, default:0},
+    editor:{}
+  },
+  collectionName:{ type: String, default:"User"},
+  createdAt: {type:Number, default:0},
+  isEnable:{type:Boolean, default:true}
 });
 
 //paginate
 UserSchema.plugin(paginate);
+UserSchema.plugin(crud);
 
 // Statics
-UserSchema.statics.loadAll = function(params, cb) {
-  if(!params.filter) params.filter = {};
-  if(!params.options) params.options = {page:1, limit:10} ;
-  if(!params.options.sort) params.options.sort = 'title';
-  this.paginate(params.filter, params.options, function(err, results){
-    cb(err, results);
-  }); 
-}
 
-UserSchema.statics.load = function(params, cb){
-  if(!params) return cb({
-      message:'Error, no parameters defined',
-      status: 404
-    });
-  //more speific validations, use middleware
-  if(!params.query.title && !params.query.url) return cb({
-    message:'Error, no query defined defined',
-    status: 404
-  });
-  if(!params.fields) params.fields = 'title url id';
-  this.findOne(params.query, params.fields, (err, person)=>{
-    return cb(err, person);
-  })  
-}
+//crud
 
 UserSchema.statics.updateDoc = function(params, cb){
-  if(!params || !params.id || !params.structure) return cb({
+  console.log(params);
+  if(!params || !params._id || !params.structure) return cb({
     message:'Error. No query parameters',
     status: 500
   });
   this.findByIdAndUpdate(
-    params.id, 
+    params._id, 
     {$set:params.structure}, 
     {new: true}, 
     (err, usr)=>{
@@ -117,12 +104,14 @@ UserSchema.statics.updateDoc = function(params, cb){
     });
 }
 
+/**
 UserSchema.statics.deletOne = function(params, cb){
   this.remove(params.query, (err)=>{
     if(err) console.log(err);
     return cb(err);
   })  
 }
+*/
 
 //Methods
 UserSchema.methods.promise = function(){
