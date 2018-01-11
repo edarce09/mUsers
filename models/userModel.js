@@ -74,10 +74,11 @@ const UserSchema = Schema({
     default:'',
     required:true
   },
-  /*roles:[{
+  //RefenceId
+  roles:[{
     type:ObjectId,
-    ref:roles
-  }], */
+    ref:'Roles'
+  }],
   //Mandatory attributes
   lastEdit:{
     date:{type: Number, default:0},
@@ -125,6 +126,14 @@ UserSchema.methods.edit = function(params, cb){
     if(params.title) this.title = arams.title;
     this.save(cb);
   });
+}
+
+UserSchema.methods.addRole = function(roles, cb){
+  console.log(this);
+  console.log('-------------------------');
+  this.roles= roles;
+  console.log(this.roles);
+  this.save(cb);
 }
 
 /**

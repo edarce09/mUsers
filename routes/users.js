@@ -8,6 +8,11 @@ router.route('/')
   .get(user.getAll)
   .post(user.saveUser); 
 
+router.route('/role/')
+ // .put(user.addRole)
+//  .delete(user.removeRole)
+  .get(user.getAll);
+
 router.route('/:user')
   .get(user.getOne)
   .post(user.update)

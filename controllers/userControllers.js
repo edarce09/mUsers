@@ -4,7 +4,7 @@ let db = require('../../../mongooseSetUp');
 let User = require('../models/userModel');
 let _ = require('lodash');
 //let response= require('oz_responses');
-let response= require('/home/kirsch/Repository/jsRepos/myNpmDependencies/responses');
+let response = require('/home/kirsch/Repository/jsRepos/myNpmDependencies/responses');
 
 const getAll = function findAllUsers(req, res){
   let params = {};
@@ -36,6 +36,7 @@ const queryBuilder = function createsAQuery(body, params, cb){
 
 }
 
+//callback to apply
 const userLoaded= function(err, req, docToEdit){
   docToEdit.preEdit(req.body, (err)=>{
     docToEdit.save((err)=>{
@@ -109,6 +110,21 @@ const deleteUser = function deletUserDocument(req, res){
   });
 }
 
+const addRole = function assignRolesToAUser(req, res){
+  let user_id = req.body.user_id;
+  let roles = req.body.roles;
+  // to change the query
+  let params = {query: {_id:user_id}};
+  User.load(params, (err, user)=>{
+    if(err) return response.serverError(res, user, err);
+    if(!user) return response.notFound(res);
+    user.addRole(req.body.roles, (err)=>{
+    if(err) return response.serverError(res, user, err);
+    else return response.ok(res);
+    });
+  });
+}
+
 
 module.exports = {
   saveUser,
@@ -116,5 +132,6 @@ module.exports = {
   update,
   deleteUser,
   editUser,
+  addRole,
   getAll
 }
