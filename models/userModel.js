@@ -9,15 +9,26 @@ let crud = require('/home/kirsch/Repository/jsRepos/myNpmDependencies/ozModelBas
 let ObjectId = mongoose.Schema.Types.ObjectId;
 let Schema = mongoose.Schema;
 
+/** 
+ *  Module Dependencies
+ */
 const UserSchema = Schema({
   /**
-   *  User Schema
    *  @module User
    *  @class User
-   *  @property {string} imageSrc - Path for the user image, unique param and not required
-   *  @property{string} username - User's name, required, unique and lowercased
-   *  @property {string} id - User's Identification number, required and unique
-   *  @property {string} email - User's
+   *  User Schema
+   *  @property {String} imageSrc - Path for the user image, unique param and not required
+   *  @property {String} username - User's name, required, unique and lowercased
+   *  @property {String} id - User's Identification number, required and unique
+   *  @property {Array} email - User's collections of mails
+   *  @property {String} social
+   * 
+   *  @property  {Object} socialnetworks
+   *  @property  {Object} workFlow
+   *  @property  {String} password - Hashed password
+   *  @property  {String} collectioName - Users
+   *
+   *
    */
   imageSrc: {
     type: String,
@@ -67,9 +78,6 @@ const UserSchema = Schema({
     type:ObjectId,
     ref:roles
   }], */
-  title:String,
-  id:Number,
-  url:Stringa,
   //Mandatory attributes
   lastEdit:{
     date:{type: Number, default:0},
@@ -102,6 +110,21 @@ UserSchema.statics.updateDoc = function(params, cb){
       if(err) return cb(err);
       return cb(err, usr);
     });
+}
+
+/**
+ *  Edit  w
+ *
+ */
+UserSchema.methods.edit = function(params, cb){
+  this.preEdit(params, (err)=>{
+    if(params.imageSrc) this.imageSrc = params.imageSrc;
+    if(params.username) this.username = params.username;
+    if(params.id) this.id = params.id;
+    if(params.url) this.url = params.url;
+    if(params.title) this.title = arams.title;
+    this.save(cb);
+  });
 }
 
 /**

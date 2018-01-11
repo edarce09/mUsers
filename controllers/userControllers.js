@@ -16,18 +16,51 @@ const getAll = function findAllUsers(req, res){
 }
 
 const getOne = function findOneUser(req,res){
-  console.log(req.params.user)
   let user = JSON.parse("{"+req.params.user+"}");
-  let query = (user.id !== undefined)? 
-    {_id:user.id}:
+  let query = (user._id !== undefined)? 
+    {_id:user._id}:
     {username:user.username};
   let params = {query:query};
-  User.load(params, (err,usr)=>{
+  User.load(params, (err, usr)=>{
     if(err) return response.serverError(res, user, err);
     if(!usr) return response.notFound(res);
     else return response.ok(res, usr);
-  })
+  });
 }
+
+const queryBuilder = function createsAQuery(body, params, cb){
+  let collectionToSearch = JSON.parse("{"+params+"}");
+  let query = (collectionToSearch._id !== undefines)?
+    {_id:collectionToSearch._id}:
+    {username:user.username};
+
+}
+
+const userLoaded= function(err, req, docToEdit){
+  docToEdit.preEdit(req.body, (err)=>{
+    docToEdit.save((err)=>{
+      return response.ok(res, user);
+    });
+  });
+}
+
+const editUser = function editOneUser(req, res){
+  let user = JSON.parse("{"+req.params.user+"}");
+  let query = (user._id !== undefined)? 
+    {_id:user._id}:
+    {username:user.username};
+  let params = {query:query};
+  let err;
+  User.load(params, (err, user)=>{
+    user.preEdit(req.body, (err)=>{
+      if(err) return response.serverError(res, user, err);
+      user.save((err)=>{
+        return response.ok(res, user);
+      });
+    })
+  });
+}
+
 
 const update = function updateUserDocument(req, res){
   if(_.isEmpty(req.body)) return res.status(500).send({message:'No information to update'});
@@ -43,6 +76,11 @@ const update = function updateUserDocument(req, res){
   });
 }
 
+//test new edit
+const newUpdate = function dinamycEdit(req, res){
+  
+}
+
 const saveUser = function savesNewUserData(req, res){
   let user = new User();
   let params = req.body;
@@ -55,7 +93,6 @@ const saveUser = function savesNewUserData(req, res){
   user.email = params.email
 
   user.save((err, u)=>{
-  console.log(user);
     if(err) response.serverError(res, user, err);
     else {
       u.promise();
@@ -72,10 +109,12 @@ const deleteUser = function deletUserDocument(req, res){
   });
 }
 
+
 module.exports = {
   saveUser,
   getOne,
   update,
   deleteUser,
+  editUser,
   getAll
 }
