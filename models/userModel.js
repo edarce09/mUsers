@@ -3,6 +3,7 @@
 let mongoose = require('mongoose');
 let paginate = require('mongoose-paginate');
 let connection = require('../../../mongooseSetUp');
+let _ = require('lodash');
 //let crud = require('ozmodelbase');
 let crud = require('/home/kirsch/Repository/jsRepos/myNpmDependencies/ozModelBase');
 
@@ -87,9 +88,12 @@ const UserSchema = Schema({
   collectionName:{ type: String, default:"User"},
   createdAt: {type:Number, default:0},
   isEnable:{type:Boolean, default:true}
+},
+{
+  usePushEach:true
 });
 
-//paginate
+//plugins
 UserSchema.plugin(paginate);
 UserSchema.plugin(crud);
 
@@ -129,11 +133,13 @@ UserSchema.methods.edit = function(params, cb){
 }
 
 UserSchema.methods.addRole = function(roles, cb){
-  console.log(this);
-  console.log('-------------------------');
-  this.roles= roles;
-  console.log(this.roles);
-  this.save(cb);
+  let nThis = this;
+  //this.roles= roles;
+  roles.forEach(function(cRole, i){
+    let nIndex = nThis.roles.indexOf(cRole);
+    if(nIndex === -1) nThis.roles.push(roles);
+  });
+  nThis.save(cb);
 }
 
 /**
