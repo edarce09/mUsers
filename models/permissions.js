@@ -31,3 +31,6 @@ const PermissionSchema = Schema({
 //plugins
 RoleSchema.plugin(paginate);
 RoleSchema.plugin(crud);
+
+let Permisions = connection.model('Permissions', PermissionSchema);
+module.exports = Permissions;
