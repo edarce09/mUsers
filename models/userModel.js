@@ -117,21 +117,6 @@ UserSchema.statics.updateDoc = function(params, cb){
     });
 }
 
-/**
- *  Edit  w
- *
- */
-UserSchema.methods.edit = function(params, cb){
-  this.preEdit(params, (err)=>{
-    if(params.imageSrc) this.imageSrc = params.imageSrc;
-    if(params.username) this.username = params.username;
-    if(params.id) this.id = params.id;
-    if(params.url) this.url = params.url;
-    if(params.title) this.title = arams.title;
-    this.save(cb);
-  });
-}
-
 UserSchema.methods.addRole = function(roles, cb){
   let nThis = this;
   //this.roles= roles;
@@ -141,15 +126,6 @@ UserSchema.methods.addRole = function(roles, cb){
   });
   nThis.save(cb);
 }
-
-/**
-UserSchema.statics.deletOne = function(params, cb){
-  this.remove(params.query, (err)=>{
-    if(err) console.log(err);
-    return cb(err);
-  })  
-}
-*/
 
 //Methods
 UserSchema.methods.promise = function(){

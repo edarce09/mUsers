@@ -15,8 +15,8 @@ router.route('/role/')
 
 router.route('/:doc')
   .get(user.getOne)
-  .post(user.update)
+  .post(user.disableIt)
   .put(user.editOne)
-  .delete(user.disableIt);
+  .delete(user.deleteOne);
 
 module.exports = router;

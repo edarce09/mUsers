@@ -13,12 +13,6 @@ let controllers = controllerBase.exportControllers(User, {
   populate: [{path:'roles'}]
 });
 
-const createOne = controllers.createOne;
-const getOne = controllers.getOne;
-const getAll = controllers.getAll;
-const editOne = controllers.editOne;
-const disableIt = controllers.disableIt;
-
 const queryBuilder = function createsAQuery(body, params, cb){
   let collectionToSearch = JSON.parse("{"+params+"}");
   let query = (collectionToSearch._id !== undefines)?
@@ -33,29 +27,6 @@ const userLoaded= function(err, req, docToEdit){
     docToEdit.save((err)=>{
       return response.ok(res, user);
     });
-  });
-}
-
-const update = function updateUserDocument(req, res){
-  if(_.isEmpty(req.body)) return res.status(500).send({message:'No information to update'});
-  let params = {};
-  if(req.body.title) params.title = req.body.title; 
-  if(req.body.url) params.url = req.body.url;
-  if(req.body.id) params.id = req.body.id;
-  if(req.body.username) params.username= req.body.username;
-  User.updateDoc({_id:req.params.user, structure:params}, (err, usr)=>{
-  if(err) return response.serverError(res, usr, err);
-  if(!usr) return response.notFound(res);
-  return response.ok(res, usr);
-  });
-}
-
-
-const deleteUser = function deletUserDocument(req, res){
-  let params = {query:{_id:req.params.user}}
-  User.deleteOne(params, (err)=>{
-    if(err) return response.serverError(res, {}, err);
-    return response.ok(res);
   });
 }
 
@@ -79,14 +50,6 @@ const addRole = function assignRolesToAUser(req, res){
   });
 }
 
+controllers.addRole = addRole;
 
-module.exports = {
-  createOne,
-  getOne,
-  getAll,
-  update,
-  deleteUser,
-  editOne,
-  addRole,
-  disableIt
-}
+module.exports = controllers;
