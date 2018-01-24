@@ -36,6 +36,13 @@ const RoleSchema = Schema({
 RoleSchema.plugin(paginate);
 RoleSchema.plugin(crud);
 
+RoleSchema.methods.addPermissions = function(permissions, cb){
+  permissions.forEach(function(cPermission, i){
+    let nIndex = this.roles.indexOf(cPermission);
+    if(nIndex === -1) this.permissions.push(cPermission);
+  });
+  this.save(cb);
+}
 
 let Roles = connection.model('Roles', RoleSchema);
 module.exports = Roles;
