@@ -4,6 +4,15 @@ let roles = require('../controllers/rolesControllers');
 
 router.route('/')
   .get(roles.getAll)
-  .post(roles.saveRole);
+  .post(roles.createOne);
+
+
+router.route('/:doc')
+  .get(roles.getOne);
+ /*
+  .post(roles.update)
+  .put(roles.editUser)
+  .delete(roles.deleteUser);
+  */
 
 module.exports = router;

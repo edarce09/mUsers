@@ -6,17 +6,17 @@ let user = require('../controllers/userControllers');
 //Post creation of new user
 router.route('/')
   .get(user.getAll)
-  .post(user.saveUser); 
+  .post(user.createOne); 
 
 router.route('/role/')
- // .put(user.addRole)
-//  .delete(user.removeRole)
+  .put(user.addRole)
+  .delete(user.disableIt)
   .get(user.getAll);
 
-router.route('/:user')
+router.route('/:doc')
   .get(user.getOne)
   .post(user.update)
-  .put(user.editUser)
-  .delete(user.deleteUser);
+  .put(user.editOne)
+  .delete(user.disableIt);
 
 module.exports = router;
