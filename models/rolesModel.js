@@ -18,10 +18,10 @@ const RoleSchema = Schema({
     unique: true,
     required: true
   },
-  permissions:[{
-//   type:ObjectId,
-//    ref:permissions
-  }],
+  /*permissions:[{
+    type:ObjectId,
+    ref:'Permissions'
+  }],*/
   //Mandatory attributes
   lastEdit:{
     date:{type: Number, default:0},
