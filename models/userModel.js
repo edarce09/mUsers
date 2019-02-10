@@ -5,8 +5,8 @@ let paginate = require('mongoose-paginate');
 let connection = require('../../../mongooseSetUp');
 let _ = require('lodash');
 //let crud = require('ozmodelbase');
-let crud = require('/home/kirsch/Repository/jsRepos/myNpmDependencies/ozModelBase');
-
+let testAddress = require('../../test/index.js');
+let crud = testAddress.crud;
 let ObjectId = mongoose.Schema.Types.ObjectId;
 let Schema = mongoose.Schema;
 
